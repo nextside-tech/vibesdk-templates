@@ -1,5 +1,7 @@
 # Cloudflare VibeSDK Templates
 
+> **Nextside fork pin:** this catalog is deployed from `nextside/pinned-7ea201f` at upstream `cloudflare/vibesdk-templates` branch `main` commit `7ea201fafdef44f5dcc5bc05f03b36e3198cebe5`. Do not deploy the moving `main` branch; update this pin only through a dedicated W2.1 maintenance change.
+
 This repository contains the official template catalog used by the Cloudflare VibeSDK project — a modern, open source “vibe coding” starter kit where users can build apps with AI agents. The goal of VibeSDK is to let anyone run their own vibe-coding platform on a Cloudflare Workers paid account with a streamlined, one-click deployment.
 
 These templates are the scaffolding that VibeSDK’s AI agents use to generate full applications for users. They are kept lightweight, production-minded, and type-safe.
