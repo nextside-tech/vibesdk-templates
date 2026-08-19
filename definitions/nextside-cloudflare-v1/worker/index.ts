@@ -4,17 +4,8 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { Env } from './core-utils';
+import { userRoutes } from './userRoutes';
 export * from './core-utils';
-
-type UserRoutesModule = { userRoutes: (app: Hono<{ Bindings: Env }>) => void };
-
-const USER_ROUTES_MODULE = './userRoutes';
-const RETRY_MS = 750;
-let nextRetryAt = 0;
-let userRoutesLoaded = false;
-let userRoutesLoadError: string | null = null;
-let userRoutesLoadPromise: Promise<void> | null = null;
-let userRoutesApp: Hono<{ Bindings: Env }> | null = null;
 
 const createUserRoutesApp = () => {
   const routes = new Hono<{ Bindings: Env }>();
@@ -25,34 +16,8 @@ const createUserRoutesApp = () => {
   return routes;
 };
 
-const safeLoadUserRoutes = async () => {
-  if (userRoutesLoaded) return;
-  if (userRoutesLoadPromise) return userRoutesLoadPromise;
-
-  const now = Date.now();
-  const shouldRetry = userRoutesLoadError !== null;
-  if (shouldRetry && now < nextRetryAt) return;
-  nextRetryAt = now + RETRY_MS;
-
-  userRoutesLoadPromise = (async () => {
-    const bust = shouldRetry && import.meta.env?.DEV ? `?t=${now}` : '';
-    const spec = `${USER_ROUTES_MODULE}${bust}`;
-
-    try {
-      const mod = (await import(/* @vite-ignore */ spec)) as UserRoutesModule;
-      const routes = createUserRoutesApp();
-      mod.userRoutes(routes);
-      userRoutesApp = routes;
-      userRoutesLoaded = true;
-      userRoutesLoadError = null;
-    } catch (e) {
-      userRoutesLoadError = e instanceof Error ? e.message : String(e);
-    } finally {
-      userRoutesLoadPromise = null;
-    }
-  })();
-  return userRoutesLoadPromise;
-};
+const userRoutesApp = createUserRoutesApp();
+userRoutes(userRoutesApp);
 
 export type ClientErrorReport = { message: string; url: string; timestamp: string } & Record<string, unknown>;
 
@@ -85,17 +50,6 @@ export default {
     const pathname = new URL(request.url).pathname;
 
     if ((pathname.startsWith('/api/') || pathname.startsWith('/internal/')) && pathname !== '/api/health' && pathname !== '/api/client-errors') {
-      await safeLoadUserRoutes();
-      if (userRoutesLoadError || !userRoutesApp) {
-        return new Response(
-          JSON.stringify({
-            success: false,
-            error: 'Worker routes failed to load',
-            detail: userRoutesLoadError,
-          }),
-          { status: 500, headers: { 'content-type': 'application/json' } },
-        );
-      }
       return userRoutesApp.fetch(request, env, ctx);
     }
 
