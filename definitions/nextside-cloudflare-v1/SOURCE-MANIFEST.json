@@ -1,0 +1,62 @@
+{
+  "$schema": "nextside.vibesdk.template-source/v1",
+  "template": "nextside-cloudflare-v1",
+  "templateRules": {
+    "path": "architecture/template-rules.json",
+    "version": "1"
+  },
+  "status": "local-reproducible-artifact",
+  "tracking": "NEX-417",
+  "base": {
+    "repository": "https://github.com/cloudflare/vibesdk-templates",
+    "forkRepository": "https://github.com/nextside-tech/vibesdk-templates",
+    "forkRef": "nextside/pinned-7ea201f",
+    "forkCommit": "594df891d2a2b1843250aa483cb59ff1ddf7aab7",
+    "upstreamRef": "main",
+    "upstreamCommit": "7ea201fafdef44f5dcc5bc05f03b36e3198cebe5",
+    "referencePath": "reference/vite-reference"
+  },
+  "requestedMergeSource": {
+    "repository": "https://github.com/VibeSDK/app-template.git",
+    "status": "not-found",
+    "checkedAt": "2026-08-06",
+    "evidence": "git ls-remote returned Repository not found"
+  },
+  "effectiveMergeSource": {
+    "repository": "https://github.com/nextside-tech/app-template",
+    "ref": "main",
+    "commit": "34f2e0b22327834f7f399bc278e43a75ddea000b",
+    "selection": [
+      "AGENTS.md conventions adapted for the greenfield lane",
+      "README.md lane and validation guidance adapted",
+      "strict TypeScript and formatting conventions",
+      "scripts/validate-local.sh contract adapted into local deterministic gates"
+    ],
+    "excluded": [
+      "apps/api-java",
+      "apps/api-node",
+      "apps/web",
+      "packages/db",
+      "packages/auth",
+      "packages/payments",
+      "docker-compose.yml",
+      "pnpm-workspace.yaml",
+      "scripts/e2e.sh from robust lane"
+    ]
+  },
+  "mergePolicy": {
+    "direction": "cloudflare-reference-plus-nextside-contracts",
+    "selectedTemplate": "nextside-cloudflare-v1",
+    "protected": [
+      "wrangler.jsonc",
+      "runtime/",
+      "runtime-cloudflare/",
+      "src/components/ui/",
+      "migrations/",
+      ".donttouch_files.json",
+      ".important_files.json",
+      "SOURCE-MANIFEST.json"
+    ],
+    "secretsPersisted": false
+  }
+}

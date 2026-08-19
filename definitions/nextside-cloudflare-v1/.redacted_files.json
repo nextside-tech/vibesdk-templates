@@ -1,0 +1,8 @@
+[
+  ".dev.vars*",
+  ".env.*",
+  "*.local",
+  ".wrangler/",
+  "node_modules/",
+  "dist/"
+]

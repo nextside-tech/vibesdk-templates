@@ -1,0 +1,14 @@
+[
+  "README.md",
+  "AGENTS.md",
+  "SOURCE-MANIFEST.json",
+  "architecture/template-rules.json",
+  "vibesdk-definition.yaml",
+  "architecture/allowed-packages.json",
+  "runtime/",
+  "runtime-cloudflare/",
+  "migrations/",
+  "worker/userRoutes.ts",
+  "scripts/validate.sh",
+  "scripts/setup-project.mjs"
+]

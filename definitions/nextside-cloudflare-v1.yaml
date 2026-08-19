@@ -1,0 +1,12 @@
+name: "nextside-cloudflare-v1"
+description: "Nextside greenfield Cloudflare template with strict TypeScript and a protected runtime contract."
+base_reference: "vite-reference"
+projectType: app
+renderMode: sandbox
+overlay_package_json: true
+package_patches:
+  name: "nextside-cloudflare-v1"
+excludes:
+  - "src/App.tsx"
+  - "src/assets/**"
+  - "*.local"

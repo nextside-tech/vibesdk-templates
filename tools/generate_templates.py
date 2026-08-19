@@ -444,6 +444,7 @@ class TemplateGenerator:
             file_patches = config.get("file_patches", [])
             package_patches = config.get("package_patches", {})
             inherit_dependencies = config.get("inherit_dependencies", True)
+            overlay_package_json = config.get("overlay_package_json", False)
 
             log_info(f"Generating template: {template_name}")
 
@@ -467,7 +468,7 @@ class TemplateGenerator:
                 template_name,
                 target_dir,
                 template_specific_files,
-                exclude_files=["package.json"],
+                exclude_files=[] if overlay_package_json else ["package.json"],
             ):
                 return False
 

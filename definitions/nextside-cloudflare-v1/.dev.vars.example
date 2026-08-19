@@ -1,0 +1,6 @@
+BETTER_AUTH_SECRET="replace-with-a-long-random-secret"
+ENCRYPTION_KEY="replace-with-a-local-encryption-key"
+ENVIRONMENT="local"
+INTERNAL_SERVICE_TOKEN="replace-with-a-local-internal-token"
+RESEND_API_KEY=""
+RESEND_FROM=""

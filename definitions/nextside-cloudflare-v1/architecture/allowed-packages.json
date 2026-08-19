@@ -1,0 +1,20 @@
+{
+  "$schema": "nextside.vibesdk.allowed-packages/v1",
+  "runtime": ["@nextside/runtime", "@nextside/runtime-cloudflare"],
+  "ui": ["@/components/ui", "class-variance-authority", "clsx", "lucide-react", "tailwind-merge"],
+  "platform": ["@cloudflare/vite-plugin", "@cloudflare/workers-types", "hono", "vite"],
+  "forbidden": [
+    "@neondatabase/serverless",
+    "drizzle-orm",
+    "@clerk/backend",
+    "stripe",
+    "@stripe/stripe-js",
+    "docker-compose",
+    "@cloudflare/workers-types/internal"
+  ],
+  "rules": {
+    "directDatabaseAccess": "runtime-cloudflare-only",
+    "userSelectsInfrastructure": false,
+    "platformSecretsInUserWorker": false
+  }
+}

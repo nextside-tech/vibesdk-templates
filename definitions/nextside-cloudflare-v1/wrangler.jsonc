@@ -1,0 +1,32 @@
+/**
+ * Golden template config. The platform renderer replaces the D1 placeholders.
+ * Agents must not modify this file after it is generated.
+ */
+ {
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "nextside-cloudflare-v1",
+	"main": "worker/index.ts",
+	"compatibility_date": "2025-04-24",
+	"compatibility_flags": ["nodejs_compat"],
+	"assets": {
+		"not_found_handling": "single-page-application",
+		"run_worker_first": ["/api/*", "!/api/docs/*"]
+	},
+	"observability": {
+		"enabled": true
+	},
+	"services": [
+		{
+			"binding": "STORAGE_SERVICE",
+			"service": "{{STORAGE_SERVICE_NAME}}"
+		}
+	],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "{{D1_DATABASE_NAME}}",
+			"database_id": "{{D1_DATABASE_ID}}",
+			"migrations_dir": "migrations"
+		}
+	]
+}

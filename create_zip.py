@@ -23,7 +23,7 @@ def create_zip(source_dir, zip_path, exclude_patterns=None):
             "node_modules/*", ".git/*", "*.log", ".DS_Store",
             "dist/*", "build/*", ".next/*", "coverage/*",
             ".nyc_output/*", "*.tgz", "*.tar.gz",
-            ".wrangler/*", ".dev.vars*", ".env.*"
+            ".wrangler/*", ".dev.vars", ".dev.vars/*", ".env.*"
         ]
     
     source_path = Path(source_dir)
@@ -72,8 +72,10 @@ def should_exclude(path, exclude_patterns):
             # File extension pattern
             if path_str.endswith(pattern[1:]):
                 return True
-        elif pattern in path_str:
-            # Simple substring match
+        elif "/" not in pattern:
+            if Path(path_str).name == pattern:
+                return True
+        elif path_str == pattern:
             return True
     
     return False

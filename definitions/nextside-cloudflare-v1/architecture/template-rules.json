@@ -1,0 +1,60 @@
+{
+  "$schema": "nextside.vibesdk.template-rules/v1",
+  "template": "nextside-cloudflare-v1",
+  "version": "1",
+  "rules": [
+    {
+      "id": "auth.d1-dedicado",
+      "texto": "Usuário Better Auth, users de domínio, outbox e logs persistem no D1 do app; acesso só via runtime-cloudflare",
+      "origem": "NEX-587",
+      "enforcement": "code",
+      "anchors": ["runtime-cloudflare/", "migrations/"]
+    },
+    {
+      "id": "auth.cifra-outbox",
+      "texto": "Fora de local, destinatário, token e URL cifrados (AES-GCM, ENCRYPTION_KEY) no outbox e em auth_email_deliveries",
+      "origem": "NEX-587",
+      "enforcement": "code",
+      "anchors": ["runtime-cloudflare/auth.ts", "migrations/"]
+    },
+    {
+      "id": "auth.status-promotion",
+      "texto": "emailVerification.afterEmailVerification promove users.status pending_email_verification→active idempotentemente (WHERE status='pending_email_verification'), com auditoria",
+      "origem": "NEX-587",
+      "enforcement": "code",
+      "anchors": ["runtime/auth.ts", "runtime-cloudflare/auth.ts"]
+    },
+    {
+      "id": "auth.reconciliacao",
+      "texto": "Migration de reconciliação para contas com emailVerified=1 e status pendente incluída no template (idempotente; 0 linhas em app novo)",
+      "origem": "NEX-587",
+      "enforcement": "code",
+      "anchors": ["migrations/"]
+    },
+    {
+      "id": "auth.nunca-relaxar",
+      "texto": "Nunca relaxar requireEmailVerification nem marcar e-mail verificado manualmente",
+      "origem": "NEX-587",
+      "enforcement": "gate",
+      "anchors": ["runtime/auth.ts", "scripts/validate.sh"]
+    },
+    {
+      "id": "auth.envio-worker",
+      "texto": "E-mail sai pelo Resend via drain do outbox (cron da plataforma); rota interna POST /internal/outbox/drain protegida por token; validação de entrega = migration aplicada, verified_pending=0, outbox drenado, health, login + rota RBAC protegida",
+      "origem": "NEX-587",
+      "enforcement": "code+gate",
+      "anchors": [
+        "runtime-cloudflare/email.ts",
+        "runtime-cloudflare/auth.ts",
+        "worker/userRoutes.ts"
+      ]
+    },
+    {
+      "id": "auth.email-literal",
+      "texto": "Endereço submetido é literal — nunca normalizar alias Gmail (+tag); conta pendente reenvia somente via POST /api/auth/send-verification-email para o mesmo endereço cadastrado",
+      "origem": "NEX-587",
+      "enforcement": "code+gate",
+      "anchors": ["runtime/auth.ts", "runtime-cloudflare/auth.ts", "worker/userRoutes.ts"]
+    }
+  ]
+}

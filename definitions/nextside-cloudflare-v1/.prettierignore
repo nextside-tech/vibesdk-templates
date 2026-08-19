@@ -1,0 +1,11 @@
+node_modules
+dist
+.wrangler
+.eslintcache
+src/components/ui
+src/lib/errorReporter.ts
+src/components/ErrorBoundary.tsx
+src/components/RouteErrorBoundary.tsx
+vite.config.ts
+wrangler.jsonc
+bun.lock
