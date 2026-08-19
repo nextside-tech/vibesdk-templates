@@ -56,4 +56,5 @@ grep -q 'src/lib/errorReporter.ts' .donttouch_files.json || fail 'errorReporter 
 grep -q 'QueryClientProvider' src/main.tsx || fail 'QueryClientProvider raiz ausente'
 grep -q "import HomePage from '@/pages/HomePage'" src/main.tsx || fail 'bootstrap precisa aceitar página gerada com export default'
 grep -q 'nodejs_compat' wrangler.jsonc || fail 'runtime Worker precisa de nodejs_compat para better-auth'
+grep -Fq '"/internal/*"' wrangler.jsonc || fail 'rotas internas precisam executar o Worker antes do fallback SPA'
 echo 'validate PASS: manifest, protection, lane boundary, auth/storage boundary, secret scan and syntax'
